@@ -1,11 +1,13 @@
 import pandas as pd
 import torch
 import numpy as np
-from transformers import BertTokenizer, BertModel
-from torch import nn
-from torch.optim import Adam
-from tqdm import tqdm
+from transformers import BertTokenizer
 
+
+df = pd.read_csv("data/bbc-text.csv")
+df_train, df_val, df_test = np.split(
+    df.sample(frac=1, random_state=42), [int(0.8 * len(df)), int(0.9 * len(df))]
+)
 tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
 labels = {"business": 0, "entertainment": 1, "sport": 2, "tech": 3, "politics": 4}
 

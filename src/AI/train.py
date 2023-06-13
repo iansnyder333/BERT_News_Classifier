@@ -1,27 +1,31 @@
 import pandas as pd
 import torch
 import numpy as np
-from transformers import BertTokenizer, BertModel
 from torch import nn
 from torch.optim import Adam
 from tqdm import tqdm
 
-from preprocess import Dataset
+from preprocess import Dataset, df_test, df_train, df_val
 from model import BertClassifier
 
-df = pd.read_csv("data/bbc-text.csv")
-tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
-labels = {"business": 0, "entertainment": 1, "sport": 2, "tech": 3, "politics": 4}
+np.random.seed(112)
+model = BertClassifier()
+EPOCHS = 1
+LR = 1e-6
 
 
-def train(model, train_data, val_data, learning_rate, epochs, checkpoint=None):
+def train(
+    model, train_data, val_data, learning_rate, epochs, batch_size=2, checkpoint=None
+):
     # Initialize the training and validation datasets
     train, val = Dataset(train_data), Dataset(val_data)
 
     # Initialize the data loaders for the training and validation datasets
     # The dataloaders will provide batches of data to the model during training.
-    train_dataloader = torch.utils.data.DataLoader(train, batch_size=2, shuffle=True)
-    val_dataloader = torch.utils.data.DataLoader(val, batch_size=2)
+    train_dataloader = torch.utils.data.DataLoader(
+        train, batch_size=batch_size, shuffle=True
+    )
+    val_dataloader = torch.utils.data.DataLoader(val, batch_size=batch_size)
 
     # Check if a GPU is available and if not, use a CPU
     use_cuda = torch.cuda.is_available()
@@ -40,6 +44,7 @@ def train(model, train_data, val_data, learning_rate, epochs, checkpoint=None):
 
     # Initialize the global step counter
     global_step = 0
+
     if checkpoint:
         checkpoint = torch.load(checkpoint)
         model.load_state_dict(checkpoint["model_state_dict"])
@@ -50,6 +55,7 @@ def train(model, train_data, val_data, learning_rate, epochs, checkpoint=None):
         # Initialize accumulators for the total training accuracy and loss
         total_acc_train = 0
         total_loss_train = 0
+
         # Iterate over the batches of the training data loader
         for train_input, train_label in tqdm(train_dataloader):
             # Move the labels and inputs to the GPU if available
@@ -76,7 +82,7 @@ def train(model, train_data, val_data, learning_rate, epochs, checkpoint=None):
             optimizer.step()
 
             global_step += 1
-            if global_step % 178 == 0:
+            if global_step % 500 == 0:
                 torch.save(
                     {
                         "epoch": epoch_num,
@@ -123,23 +129,30 @@ def train(model, train_data, val_data, learning_rate, epochs, checkpoint=None):
             )
 
 
-if __name__ == "__main__":
-    np.random.seed(112)
-    df_train, df_val, df_test = np.split(
-        df.sample(frac=1, random_state=42), [int(0.8 * len(df)), int(0.9 * len(df))]
-    )
+def main():
+    response = str(input("Resume Training? (Y/N): \n"))
+    if response == "Y" or response == "y":
+        print(len(df_train), len(df_val), len(df_test))
+        train(
+            model,
+            df_train,
+            df_val,
+            LR,
+            EPOCHS,
+            checkpoint="src/AI/checkpoints/checkpoint_4_890F.pt",
+        )
+    elif response == "N" or response == "n":
+        print(len(df_train), len(df_val), len(df_test))
+        train(
+            model,
+            df_train,
+            df_val,
+            LR,
+            EPOCHS,
+        )
+    else:
+        print("Invalid Response")
 
-    print(len(df_train), len(df_val), len(df_test))
-    EPOCHS = 1
-    model = BertClassifier()
-    LR = 1e-6
-    """
-    train(
-        model,
-        df_train,
-        df_val,
-        LR,
-        EPOCHS,
-        checkpoint="/Users/iansnyder/Desktop/Projects/NER_proj/src/AI/checkpoints/checkpoint_3_890F.pt",
-    )
-    """
+
+if __name__ == "__main__":
+    main()

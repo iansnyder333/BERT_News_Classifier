@@ -1,17 +1,10 @@
 import pandas as pd
 import torch
 import numpy as np
-from transformers import BertTokenizer, BertModel
-from torch import nn
-from torch.optim import Adam
-from tqdm import tqdm
 
-from preprocess import Dataset
+
+from preprocess import Dataset, df_test
 from model import BertClassifier
-
-df = pd.read_csv("data/bbc-text.csv")
-tokenizer = BertTokenizer.from_pretrained("bert-base-cased")
-labels = {"business": 0, "entertainment": 1, "sport": 2, "tech": 3, "politics": 4}
 
 
 def evaluate(model, test_data):
@@ -42,15 +35,10 @@ def evaluate(model, test_data):
 
 if __name__ == "__main__":
     np.random.seed(112)
-    df_train, df_val, df_test = np.split(
-        df.sample(frac=1, random_state=42), [int(0.8 * len(df)), int(0.9 * len(df))]
-    )
+
     m = BertClassifier()
-    """
-    checkpoing = torch.load(
-        "/Users/iansnyder/Desktop/Projects/NER_proj/src/AI/models/model4.pt"
-    )
+
+    checkpoing = torch.load("src/AI/models/model4.pt")
     m.load_state_dict(checkpoing)
     m.eval()
     evaluate(m, df_test)
-    """
