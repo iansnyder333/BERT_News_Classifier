@@ -133,7 +133,7 @@ if __name__ == "__main__":
     EPOCHS = 1
     model = BertClassifier()
     LR = 1e-6
-
+    """
     train(
         model,
         df_train,
@@ -142,3 +142,4 @@ if __name__ == "__main__":
         EPOCHS,
         checkpoint="/Users/iansnyder/Desktop/Projects/NER_proj/src/AI/checkpoints/checkpoint_3_890F.pt",
     )
+    """

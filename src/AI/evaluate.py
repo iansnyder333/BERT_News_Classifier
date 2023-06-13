@@ -46,9 +46,11 @@ if __name__ == "__main__":
         df.sample(frac=1, random_state=42), [int(0.8 * len(df)), int(0.9 * len(df))]
     )
     m = BertClassifier()
+    """
     checkpoing = torch.load(
         "/Users/iansnyder/Desktop/Projects/NER_proj/src/AI/models/model4.pt"
     )
     m.load_state_dict(checkpoing)
     m.eval()
     evaluate(m, df_test)
+    """

@@ -12,6 +12,7 @@ from model import BertClassifier
 
 if __name__ == "__main__":
     m = BertClassifier()
+    """
     class_names = ["business", "entertainment", "sport", "tech", "politics"]
     check = torch.load(
         "/Users/iansnyder/Desktop/Projects/NER_proj/src/AI/models/model4.pt"
@@ -36,7 +37,7 @@ if __name__ == "__main__":
 
         predicted_classes = [class_names[index] for index in predicted_indices]
         print(f"The article is catagorized as: {predicted_classes[0]} \n")
-    """
+    
     df = pd.read_csv("data/test-1.csv")
     test = Dataset(df)
     test_dataloader = torch.utils.data.DataLoader(test, batch_size=1)
