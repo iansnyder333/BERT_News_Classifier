@@ -1,3 +1,4 @@
 src/AI/__pycache__
 .DS_Store
 src/AI/checkpoints/checkpoint_4_890F.pt
+venv

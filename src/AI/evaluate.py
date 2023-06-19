@@ -3,8 +3,8 @@ import torch
 import numpy as np
 
 
-from preprocess import Dataset, df_test
-from model import BertClassifier
+from src.AI.preprocess import Dataset, df_test
+from src.AI.model import BertClassifier
 
 
 def evaluate(model, test_data):

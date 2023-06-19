@@ -5,8 +5,8 @@ from torch import nn
 from torch.optim import Adam
 from tqdm import tqdm
 
-from preprocess import Dataset, df_test, df_train, df_val
-from model import BertClassifier
+from src.AI.preprocess import Dataset, df_test, df_train, df_val
+from src.AI.model import BertClassifier
 
 np.random.seed(112)
 model = BertClassifier()

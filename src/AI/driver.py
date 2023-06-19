@@ -1,15 +1,34 @@
+import sys
 import pandas as pd
 import torch
 import numpy as np
 
-
 from src.AI.preprocess import Dataset
 from src.AI.model import BertClassifier
+
 
 class_names = ["business", "entertainment", "sport", "tech", "politics"]
 
 
-def test_file(m, path):
+def run():
+    context = input(
+        "Enter 1 to classify article, enter 2 to test model with a dataframe: \n"
+    )
+
+    print(context == "1")
+    if context == "1" or context == "2":
+        m = BertClassifier()
+        context = int(context)
+        check = torch.load("src/AI/models/model4.pt")
+        m.load_state_dict(check)
+        m.eval()
+        test_input(m) if context == 1 else test_file(m)
+    else:
+        print("Invalid input")
+        sys.exit(0)
+
+
+def test_file(m):
     df = pd.read_csv("data/test-1.csv")
     test = Dataset(df)
     test_dataloader = torch.utils.data.DataLoader(test, batch_size=1)
@@ -51,16 +70,5 @@ def test_input(m):
         print(f"The article is catagorized as: {predicted_classes[0]} \n")
 
 
-def main():
-    m = BertClassifier()
-
-    # class_names = ["business", "entertainment", "sport", "tech", "politics"]
-    check = torch.load("src/AI/models/model4.pt")
-    m.load_state_dict(check)
-    m.eval()
-
-    test_file(m, "data/test-1.csv")
-
-
 if __name__ == "__main__":
-    main()
+    run()
