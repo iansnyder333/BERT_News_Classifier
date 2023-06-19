@@ -1,5 +1,6 @@
 # BERT_News_Classifier
-NLP to classify news articles into catagories
+NLP to classify news articles into catagories.
+Model inputs a news article as raw text and outputs one of the following categories: "business", "entertainment", "sport", "tech", or "politics".
 
 ## Table of Contents
 
@@ -26,3 +27,5 @@ python3.11 main.py
 ## Notes
 
 Python 3.11 required.
+
+Model was trained with 5 EPOCHS using bbc-text csv file from kaggle. Model has 97% accuracy on testing data but is still in development for accuratley classifying new articles.
