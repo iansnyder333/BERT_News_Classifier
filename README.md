@@ -2,6 +2,15 @@
 NLP to classify news articles into catagories.
 Model inputs a news article as raw text and outputs one of the following categories: "business", "entertainment", "sport", "tech", or "politics".
 
+## Demo Video 
+
+
+
+https://github.com/iansnyder333/BERT_News_Classifier/assets/58576523/a7af66e6-888f-4c2d-8694-402ce6c9461d
+
+
+
+
 ## Table of Contents
 
 - [How to Download](#how-to-download)
