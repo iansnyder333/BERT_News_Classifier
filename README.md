@@ -35,6 +35,6 @@ python3.11 main.py
 
 ## Notes
 
-Python 3.11 required.
+Python 3.11 recommended, the app was not tested on any other versions so performance is not known.
 
 Model was trained with 5 EPOCHS using bbc-text csv file from kaggle. Model has 97% accuracy on testing data but is still in development for accuratley classifying new articles.
